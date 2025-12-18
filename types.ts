@@ -22,11 +22,23 @@ export interface ProjectFeatures {
   analytics: boolean;
 }
 
+export type DesignStyle = 'Minimal' | 'Glassmorphism' | 'Cyberpunk' | 'Corporate' | 'Neo-Brutalism' | 'Retro' | 'Luxury';
+export type ColorTheme = 'Light' | 'Dark' | 'Midnight';
+
+export interface ProjectDesign {
+  style: DesignStyle;
+  theme: ColorTheme;
+  primaryColor: string;
+}
+
 export interface ProjectConfig {
   idea: string;
   stack: TechStack;
   database: Database;
   features: ProjectFeatures;
+  design: ProjectDesign;
+  visualIdentity?: string; // Kept for AI suggestions
+  referenceImages?: string[];
 }
 
 export interface CustomizationOptions {
@@ -57,21 +69,30 @@ export type PipelineStage =
   | 'monitor';
 
 // New Types for Admin/Chat
-export interface Project {
-  id: string;
-  name: string;
-  createdAt: number;
-  status: 'building' | 'live' | 'archived';
-  config: ProjectConfig;
-  generatedCode?: string;
-  currentStage: number;
-  blueprint?: string;
-}
-
 export interface ChatMessage {
   id: string;
   role: 'user' | 'ai';
   text: string;
   timestamp: number;
   isCodeUpdate?: boolean; // If true, this message contains a code update
+}
+
+export interface ProjectFile {
+  name: string;
+  content: string;
+  language: 'html' | 'css' | 'javascript' | 'json' | 'markdown' | 'typescript' | 'image';
+}
+
+export interface Project {
+  id: string;
+  name: string;
+  createdAt: number;
+  lastModified?: number;
+  status: 'building' | 'live' | 'archived';
+  config: ProjectConfig;
+  generatedCode?: string; // Legacy single-file support
+  files?: ProjectFile[]; // New multi-file support
+  currentStage: number;
+  blueprint?: string;
+  chatHistory?: ChatMessage[];
 }

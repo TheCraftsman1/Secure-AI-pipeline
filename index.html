@@ -1,49 +1,157 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NexusBuild AI Pipeline</title>
+    <title>AscendFlow AI Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              mono: ['Fira Code', 'monospace'],
+              sans: ['Plus Jakarta Sans', 'sans-serif'],
+              display: ['Outfit', 'sans-serif'],
+              serif: ['Cormorant Garamond', 'serif'],
             },
             colors: {
-              slate: {
-                850: '#151e2e',
-                950: '#020617',
+              midnight: {
+                900: '#0a0a0c', // Warmer, deeper black
+                800: '#141418', // Soft charcoal
+                700: '#202026', // Lighter charcoal
+              },
+              accent: {
+                gold: '#d4af37', // Luxury gold
+                teal: '#2dd4bf', // Muted teal
+                rose: '#e17055', // Warm terracotta
               }
             },
             animation: {
-              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-              'spin-slow': 'spin 3s linear infinite',
+              'float': 'float 8s ease-in-out infinite',
+              'breath': 'breath 10s ease-in-out infinite',
+              'fade-in': 'fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+              'scale-in': 'scaleIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              },
+              breath: {
+                '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+                '50%': { opacity: '0.6', transform: 'scale(1.05)' },
+              },
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              scaleIn: {
+                '0%': { opacity: '0', transform: 'scale(0.98)' },
+                '100%': { opacity: '1', transform: 'scale(1)' },
+              }
             }
           },
         },
       }
     </script>
     <style>
+      :root {
+        --glass-border: rgba(255, 255, 255, 0.03);
+        --glass-bg: rgba(255, 255, 255, 0.02);
+      }
+
       body {
-        background-color: #020617;
-        color: #f8fafc;
+        background-color: #0a0a0c;
+        color: #e2e8f0;
+        overflow-x: hidden;
+        font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+        -webkit-font-smoothing: antialiased;
       }
+      
+      /* Ambient Lighting - Replaces Starfield */
+      .ambient-light {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        background: 
+            radial-gradient(circle at 15% 10%, rgba(45, 212, 191, 0.08) 0%, transparent 40%),
+            radial-gradient(circle at 85% 30%, rgba(212, 175, 55, 0.06) 0%, transparent 40%),
+            radial-gradient(circle at 50% 90%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+        pointer-events: none;
+      }
+      
+      .noise-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+        opacity: 0.03;
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      /* Premium Glass Panel - No Borders, Just Depth */
       .glass-panel {
-        background: rgba(30, 41, 59, 0.7);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: var(--glass-bg);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--glass-border);
+        box-shadow: 
+            0 20px 40px -10px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        border-radius: 2rem; /* Soft, large radius */
+        transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
       }
+      
+      .glass-panel:hover {
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.03);
+        box-shadow: 
+            0 30px 60px -12px rgba(0, 0, 0, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+          width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+          background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 255, 255, 0.2);
+      }
+
       .scrollbar-hide::-webkit-scrollbar {
           display: none;
       }
       .scrollbar-hide {
           -ms-overflow-style: none;
           scrollbar-width: none;
+      }
+
+      /* Premium Text Gradients */
+      .text-gradient-gold {
+        background: linear-gradient(135deg, #fce7f3 0%, #e2e8f0 50%, #d4af37 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      input, select, textarea {
+        transition: all 0.3s ease;
+      }
+      input:focus, select:focus, textarea:focus {
+        box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.2);
+        background: rgba(255,255,255,0.05);
       }
     </style>
   <script type="importmap">
@@ -54,12 +162,15 @@
     "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
     "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
-    "recharts": "https://aistudiocdn.com/recharts@^3.4.1"
+    "recharts": "https://aistudiocdn.com/recharts@^3.4.1",
+    "dompurify": "https://aistudiocdn.com/dompurify@^3.0.6"
   }
 }
 </script>
 </head>
   <body>
+    <div class="ambient-light"></div>
+    <div class="noise-overlay"></div>
     <div id="root"></div>
   </body>
 </html>
