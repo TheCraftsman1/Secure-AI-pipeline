@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Activity, Users, Cpu, Globe, Zap, Shield, ExternalLink, Map, Settings, AlertTriangle, CheckCircle, Server, Sliders, ArrowLeft } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
@@ -27,12 +28,11 @@ interface ServerRegion {
   load: number;
 }
 
-// Adjusted coordinates for the detailed map projection
 const INITIAL_REGIONS: ServerRegion[] = [
   { id: 'us-east', name: 'N. Virginia (US-EAST-1)', x: 29, y: 36, status: 'active', latency: 24, load: 45 },
   { id: 'us-west', name: 'California (US-WEST-1)', x: 18, y: 38, status: 'active', latency: 45, load: 30 },
   { id: 'eu-cent', name: 'Frankfurt (EU-CENTRAL)', x: 52, y: 28, status: 'active', latency: 88, load: 60 },
-  { id: 'india', name: 'Mumbai (AP-SOUTH-1)', x: 70, y: 44, status: 'active', latency: 35, load: 75 }, // Added India
+  { id: 'india', name: 'Mumbai (AP-SOUTH-1)', x: 70, y: 44, status: 'active', latency: 35, load: 75 },
   { id: 'asia-se', name: 'Singapore (AP-SOUTHEAST)', x: 78, y: 58, status: 'degraded', latency: 150, load: 85 },
   { id: 'asia-ne', name: 'Tokyo (AP-NORTHEAST)', x: 88, y: 35, status: 'active', latency: 120, load: 40 },
   { id: 'sa-east', name: 'São Paulo (SA-EAST-1)', x: 34, y: 72, status: 'active', latency: 180, load: 25 },
@@ -66,10 +66,7 @@ export const StageMonitor: React.FC<Props> = ({ config, generatedCode, onBack })
     const interval = setInterval(() => {
       setData(prev => {
         const newTime = prev[prev.length - 1].time + 1;
-        
-        // Resource scaling math: More cores/RAM = less load/better performance
         const cpuLoadFactor = 8 / resources.cpuCores; 
-        
         const spike = Math.random() > 0.9 ? 30 : 0;
         const newItem = {
           time: newTime,
@@ -182,7 +179,6 @@ export const StageMonitor: React.FC<Props> = ({ config, generatedCode, onBack })
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[800px] lg:h-[600px]">
         
         <div className="lg:col-span-5 flex flex-col gap-6 h-full min-h-0">
-           
            <div className="glass-panel p-0 rounded-xl flex-1 flex flex-col min-h-0 relative overflow-hidden group">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.1),transparent)] pointer-events-none"></div>
               
@@ -204,26 +200,9 @@ export const StageMonitor: React.FC<Props> = ({ config, generatedCode, onBack })
                  <div className="absolute inset-0 w-full h-full bg-[conic-gradient(from_0deg,transparent_0deg,transparent_270deg,rgba(6,182,212,0.1)_360deg)] animate-[spin_4s_linear_infinite] rounded-full scale-150 opacity-30 pointer-events-none"></div>
 
                  <div className="relative w-full h-full" style={{ paddingBottom: '50%' }}>
-                     <svg 
-                        viewBox="0 0 1000 500" 
-                        className="absolute inset-0 w-full h-full pointer-events-none"
-                     >
-                        {/* Real World Map Path */}
-                        <path 
-                          d="M174.4 78.4c-6.2-4.1-13.8-7.8-19.4-11.2-1.6-.9-5.1-5.1-6.6-4.5-5.1 2.2-11.4 1.8-16.7 3.5-2.2.7-3.8 2.7-5.4 4.5-3.3 3.8-10.2 4-13.8 7.3-1.6 1.4-1.8 4-2.7 6-2.5 5.1-2 11.1-2.2 16.7-.2 6.7 2.5 13.1 2.7 19.8.2 4.2-2.5 7.8-2 12 .5 3.8 4.2 6.5 6.2 9.4 3.1 4.2 3.8 10.2 7.1 14.3 3.3 4.2 9.1 4.7 13.2 7.6 2.5 1.8 3.8 5.1 6.5 6.7 4.2 2.5 9.4 1.8 14.3 2 4.2.2 8.7.9 12.3-1.6 2.9-2 4.7-5.8 5.4-9.1 1.4-6.2-1.1-12.7-2.9-18.7-1.1-3.6-2.7-7.1-2.9-10.9-.2-4.5 2.5-8.5 4.5-12.5 2.2-4.2 4.5-8.5 5.6-13.2.7-2.9-.5-6-1.8-8.7zm650 30c-1.8-2.5-4.5-4.2-7.1-5.8-3.6-2-8.3-2-12.3-2.5-4.9-.5-9.6-.2-14.5.5-2.5.4-5.4 1.1-7.1 3.1-2 2.2-2 5.6-2.9 8.3-1.4 4-3.6 7.6-6 11.2-2.2 3.6-5.4 6.7-6.2 10.9-.5 2.5.5 5.1 1.6 7.4 2 4 5.4 7.4 8.7 10.3 3.6 3.1 7.6 5.6 12 7.1 2.2.7 4.9.5 7.1.5 4.5-.2 9.1-.5 13.4-2 3.8-1.4 7.4-3.8 9.8-7.1 2.5-3.1 3.3-7.4 4.5-11.2 1.4-4.5 2.7-9.1 3.6-13.8.7-3.3 1.1-6.9.9-10.3-.2-3.1-2-5.6-4-7.8zm-152-32c-3.1-1.6-6.5-2.7-9.8-3.6-3.8-.9-8-1.1-11.8-.7-3.8.4-7.4 2.2-10.9 3.8-2.9 1.4-5.6 3.3-8 5.4-2.2 2-3.8 4.7-7.6-1.1 3.1-1.1 6.5-1.1 9.8 0 3.3.7 6.5 2.2 9.4 1.6 3.1 4 5.8 6.9 7.6 2.9 1.8 6.2 2.7 9.6 2.9 3.6.2 7.4-.5 10.7-2 3.1-1.4 5.8-3.8 7.8-6.5 2-2.7 3.3-5.8 4-9.1.7-3.3.7-6.7.2-10-.5-3.3-2.2-6.2-4.5-8.7zm-268 220c-3.3-3.1-7.4-5.1-11.6-6.5-4.2-1.4-8.7-1.8-13.2-1.4-3.8.4-7.4 2-10.5 4.2-2.9 2-4.9 5.1-6.2 8.3-1.6 3.6-2 7.8-1.6 11.8.4 3.8 2 7.4 4.7 10.3 2.5 2.7 5.8 4.7 9.4 5.8 3.6 1.1 7.4 1.1 11.2.7 3.8-.4 7.4-2 10.3-4.2 2.9-2.2 4.9-5.4 6-8.7 1.1-3.3 1.4-6.9 1.1-10.3-.2-3.3-1.6-6.5-3.6-9.1zm395 55c-2.5-2.2-5.8-3.6-8.9-4.7-3.3-1.1-6.7-1.6-10-1.6-3.6 0-7.1 1.1-10.3 2.9-2.9 1.6-5.1 4.2-6.5 7.1-1.6 3.1-2 6.7-1.6 10 .4 3.3 1.8 6.5 4 8.9 2.2 2.5 5.1 4.2 8.3 5.1 3.1.9 6.5.9 9.8.4 3.3-.5 6.5-2 9.1-4 2.5-2 4.5-4.9 5.4-8 .9-2.9 1.1-6 .7-9.1-.4-2.9-1.8-5.6-3.6-7.8zM245 320c-4-2.9-8.7-4.7-13.4-5.4-4.5-.7-9.1-.2-13.6 1.4-4 1.4-7.4 4.2-9.8 7.8-2.2 3.3-3.1 7.6-3.1 11.6 0 4 .9 8 3.1 11.4 2 3.1 5.4 5.4 9.1 6.5 3.8 1.1 7.8.9 11.6-.2 3.8-1.1 7.1-3.6 9.6-6.7 2.2-2.9 3.6-6.5 3.8-10.3.2-3.6-.9-7.1-3.1-10-1.1-1.6-2.5-3.1-4.2-4.5zm-50-130c-2.9-1.8-6.2-2.9-9.6-3.3-3.6-.4-7.4.2-10.7 1.8-3.1 1.4-5.8 3.8-7.6 6.7-1.8 2.9-2.7 6.2-2.7 9.6 0 3.6.9 6.9 2.7 9.8 1.8 2.9 4.5 5.1 7.8 6.5 3.3 1.4 6.9 1.8 10.5 1.1 3.6-.7 6.9-2.5 9.4-5.1 2.5-2.5 4.2-5.8 4.9-9.4.7-3.6.2-7.4-1.4-10.7-1.1-2.5-2.9-4.7-5.1-6.2z" 
-                          className="fill-current text-slate-400/20 dark:text-slate-600/30 stroke-slate-400/40 dark:stroke-slate-500/40 stroke-[1]"
-                        />
-                        
-                        {/* Dot Pattern Fill Effect */}
-                        <defs>
-                          <pattern id="techDots" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
-                             <rect x="0" y="0" width="1.5" height="1.5" className="text-slate-500/30 dark:text-slate-500/30" fill="currentColor" />
-                          </pattern>
-                        </defs>
-                        <path d="M174.4 78.4c-6.2-4.1-13.8-7.8-19.4-11.2-1.6-.9-5.1-5.1-6.6-4.5-5.1 2.2-11.4 1.8-16.7 3.5-2.2.7-3.8 2.7-5.4 4.5-3.3 3.8-10.2 4-13.8 7.3-1.6 1.4-1.8 4-2.7 6-2.5 5.1-2 11.1-2.2 16.7-.2 6.7 2.5 13.1 2.7 19.8.2 4.2-2.5 7.8-2 12 .5 3.8 4.2 6.5 6.2 9.4 3.1 4.2 3.8 10.2 7.1 14.3 3.3 4.2 9.1 4.7 13.2 7.6 2.5 1.8 3.8 5.1 6.5 6.7 4.2 2.5 9.4 1.8 14.3 2 4.2.2 8.7.9 12.3-1.6 2.9-2 4.7-5.8 5.4-9.1 1.4-6.2-1.1-12.7-2.9-18.7-1.1-3.6-2.7-7.1-2.9-10.9-.2-4.5 2.5-8.5 4.5-12.5 2.2-4.2 4.5-8.5 5.6-13.2.7-2.9-.5-6-1.8-8.7zm650 30c-1.8-2.5-4.5-4.2-7.1-5.8-3.6-2-8.3-2-12.3-2.5-4.9-.5-9.6-.2-14.5.5-2.5.4-5.4 1.1-7.1 3.1-2 2.2-2 5.6-2.9 8.3-1.4 4-3.6 7.6-6 11.2-2.2 3.6-5.4 6.7-6.2 10.9-.5 2.5.5 5.1 1.6 7.4 2 4 5.4 7.4 8.7 10.3 3.6 3.1 7.6 5.6 12 7.1 2.2.7 4.9.5 7.1.5 4.5-.2 9.1-.5 13.4-2 3.8-1.4 7.4-3.8 9.8-7.1 2.5-3.1 3.3-7.4 4.5-11.2 1.4-4.5 2.7-9.1 3.6-13.8.7-3.3 1.1-6.9.9-10.3-.2-3.1-2-5.6-4-7.8zm-152-32c-3.1-1.6-6.5-2.7-9.8-3.6-3.8-.9-8-1.1-11.8-.7-3.8.4-7.4 2.2-10.9 3.8-2.9 1.4-5.6 3.3-8 5.4-2.2 2-3.8 4.7-7.6-1.1 3.1-1.1 6.5-1.1 9.8 0 3.3.7 6.5 2.2 9.4 1.6 3.1 4 5.8 6.9 7.6 2.9 1.8 6.2 2.7 9.6 2.9 3.6.2 7.4-.5 10.7-2 3.1-1.4 5.8-3.8 7.8-6.5 2-2.7 3.3-5.8 4-9.1.7-3.3.7-6.7.2-10-.5-3.3-2.2-6.2-4.5-8.7zm-268 220c-3.3-3.1-7.4-5.1-11.6-6.5-4.2-1.4-8.7-1.8-13.2-1.4-3.8.4-7.4 2-10.5 4.2-2.9 2-4.9 5.1-6.2 8.3-1.6 3.6-2 7.8-1.6 11.8.4 3.8 2 7.4 4.7 10.3 2.5 2.7 5.8 4.7 9.4 5.8 3.6 1.1 7.4 1.1 11.2.7 3.8-.4 7.4-2 10.3-4.2 2.9-2.2 4.9-5.4 6-8.7 1.1-3.3 1.4-6.9 1.1-10.3-.2-3.3-1.6-6.5-3.6-9.1zm395 55c-2.5-2.2-5.8-3.6-8.9-4.7-3.3-1.1-6.7-1.6-10-1.6-3.6 0-7.1 1.1-10.3 2.9-2.9 1.6-5.1 4.2-6.5 7.1-1.6 3.1-2 6.7-1.6 10 .4 3.3 1.8 6.5 4 8.9 2.2 2.5 5.1 4.2 8.3 5.1 3.1.9 6.5.9 9.8.4 3.3-.5 6.5-2 9.1-4 2.5-2 4.5-4.9 5.4-8 .9-2.9 1.1-6 .7-9.1-.4-2.9-1.8-5.6-3.6-7.8zM245 320c-4-2.9-8.7-4.7-13.4-5.4-4.5-.7-9.1-.2-13.6 1.4-4 1.4-7.4 4.2-9.8 7.8-2.2 3.3-3.1 7.6-3.1 11.6 0 4 .9 8 3.1 11.4 2 3.1 5.4 5.4 9.1 6.5 3.8 1.1 7.8.9 11.6-.2 3.8-1.1 7.1-3.6 9.6-6.7 2.2-2.9 3.6-6.5 3.8-10.3.2-3.6-.9-7.1-3.1-10-1.1-1.6-2.5-3.1-4.2-4.5zm-50-130c-2.9-1.8-6.2-2.9-9.6-3.3-3.6-.4-7.4.2-10.7 1.8-3.1 1.4-5.8 3.8-7.6 6.7-1.8 2.9-2.7 6.2-2.7 9.6 0 3.6.9 6.9 2.7 9.8 1.8 2.9 4.5 5.1 7.8 6.5 3.3 1.4 6.9 1.8 10.5 1.1 3.6-.7 6.9-2.5 9.4-5.1 2.5-2.5 4.2-5.8 4.9-9.4.7-3.6.2-7.4-1.4-10.7-1.1-2.5-2.9-4.7-5.1-6.2z" fill="url(#techDots)" opacity="0.8" />
+                     <svg viewBox="0 0 1000 500" className="absolute inset-0 w-full h-full pointer-events-none">
+                        <path d="M174.4 78.4c-6.2-4.1-13.8-7.8-19.4-11.2-1.6-.9-5.1-5.1-6.6-4.5-5.1 2.2-11.4 1.8-16.7 3.5-2.2.7-3.8 2.7-5.4 4.5-3.3 3.8-10.2 4-13.8 7.3-1.6 1.4-1.8 4-2.7 6-2.5 5.1-2 11.1-2.2 16.7-.2 6.7 2.5 13.1 2.7 19.8.2 4.2-2.5 7.8-2 12 .5 3.8 4.2 6.5 6.2 9.4 3.1 4.2 3.8 10.2 7.1 14.3 3.3 4.2 9.1 4.7 13.2 7.6 2.5 1.8 3.8 5.1 6.5 6.7 4.2 2.5 9.4 1.8 14.3 2 4.2.2 8.7.9 12.3-1.6 2.9-2 4.7-5.8 5.4-9.1 1.4-6.2-1.1-12.7-2.9-18.7-1.1-3.6-2.7-7.1-2.9-10.9-.2-4.5 2.5-8.5 4.5-12.5 2.2-4.2 4.5-8.5 5.6-13.2.7-2.9-.5-6-1.8-8.7zm650 30c-1.8-2.5-4.5-4.2-7.1-5.8-3.6-2-8.3-2-12.3-2.5-4.9-.5-9.6-.2-14.5.5-2.5.4-5.4 1.1-7.1 3.1-2 2.2-2 5.6-2.9 8.3-1.4 4-3.6 7.6-6 11.2-2.2 3.6-5.4 6.7-6.2 10.9-.5 2.5.5 5.1 1.6 7.4 2 4 5.4 7.4 8.7 10.3 3.6 3.1 7.6 5.6 12 7.1 2.2.7 4.9.5 7.1.5 4.5-.2 9.1-.5 13.4-2 3.8-1.4 7.4-3.8 9.8-7.1 2.5-3.1 3.3-7.4 4.5-11.2 1.4-4.5 2.7-9.1 3.6-13.8.7-3.3 1.1-6.9.9-10.3-.2-3.1-2-5.6-4-7.8zm-152-32c-3.1-1.6-6.5-2.7-9.8-3.6-3.8-.9-8-1.1-11.8-.7-3.8.4-7.4 2.2-10.9 3.8-2.9 1.4-5.6 3.3-8 5.4-2.2 2-3.8 4.7-7.6-1.1 3.1-1.1 6.5-1.1 9.8 0 3.3.7 6.5 2.2 9.4 1.6 3.1 4 5.8 6.9 7.6 2.9 1.8 6.2 2.7 9.6 2.9 3.6.2 7.4-.5 10.7-2 3.1-1.4 5.8-3.8 7.8-6.5 2-2.7 3.3-5.8 4-9.1.7-3.3.7-6.7.2-10-.5-3.3-2.2-6.2-4.5-8.7zm-268 220c-3.3-3.1-7.4-5.1-11.6-6.5-4.2-1.4-8.7-1.8-13.2-1.4-3.8.4-7.4 2-10.5 4.2-2.9 2-4.9 5.1-6.2 8.3-1.6 3.6-2 7.8-1.6 11.8.4 3.8 2 7.4 4.7 10.3 2.5 2.7 5.8 4.7 9.4 5.8 3.6 1.1 7.4 1.1 11.2.7 3.8-.4 7.4-2 10.3-4.2 2.9-2.2 4.9-5.4 6-8.7 1.1-3.3 1.4-6.9 1.1-10.3-.2-3.3-1.6-6.5-3.6-9.1zm395 55c-2.5-2.2-5.8-3.6-8.9-4.7-3.3-1.1-6.7-1.6-10-1.6-3.6 0-7.1 1.1-10.3 2.9-2.9 1.6-5.1 4.2-6.5 7.1-1.6 3.1-2 6.7-1.6 10 .4 3.3 1.8 6.5 4 8.9 2.2 2.5 5.1 4.2 8.3 5.1 3.1.9 6.5.9 9.8.4 3.3-.5 6.5-2 9.1-4 2.5-2 4.5-4.9 5.4-8 .9-2.9 1.1-6 .7-9.1-.4-2.9-1.8-5.6-3.6-7.8zM245 320c-4-2.9-8.7-4.7-13.4-5.4-4.5-.7-9.1-.2-13.6 1.4-4 1.4-7.4 4.2-9.8 7.8-2.2 3.3-3.1 7.6-3.1 11.6 0 4 .9 8 3.1 11.4 2 3.1 5.4 5.4 9.1 6.5 3.8 1.1 7.8.9 11.6-.2 3.8-1.1 7.1-3.6 9.6-6.7 2.2-2.9 3.6-6.5 3.8-10.3.2-3.6-.9-7.1-3.1-10-1.1-1.6-2.5-3.1-4.2-4.5zm-50-130c-2.9-1.8-6.2-2.9-9.6-3.3-3.6-.4-7.4.2-10.7 1.8-3.1 1.4-5.8 3.8-7.6 6.7-1.8 2.9-2.7 6.2-2.7 9.6 0 3.6.9 6.9 2.7 9.8 1.8 2.9 4.5 5.1 7.8 6.5 3.3 1.4 6.9 1.8 10.5 1.1 3.6-.7 6.9-2.5 9.4-5.1 2.5-2.5 4.2-5.8 4.9-9.4.7-3.6.2-7.4-1.4-10.7-1.1-2.5-2.9-4.7-5.1-6.2z" className="fill-current text-slate-400/20 dark:text-slate-600/30 stroke-slate-400/40 dark:stroke-slate-500/40 stroke-[1]"/>
                      </svg>
-                     
-                     {/* Special Highlight for India as requested */}
                      <div className="absolute left-[70%] top-[44%] -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl animate-pulse pointer-events-none z-0"></div>
                      <div className="absolute left-[70%] top-[44%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full blur-sm animate-ping pointer-events-none z-0 duration-1000"></div>
                  </div>
@@ -268,59 +247,40 @@ export const StageMonitor: React.FC<Props> = ({ config, generatedCode, onBack })
               </h3>
               
               <div className="flex-1 flex gap-6 overflow-hidden">
-                 {/* Resource Allocation Sliders */}
                  <div className="flex-1 space-y-4 overflow-y-auto pr-2 scrollbar-hide border-r border-slate-200 dark:border-slate-700/50 mr-2">
                     <div>
                         <div className="flex justify-between text-xs mb-1">
                             <span className="text-slate-500 dark:text-slate-400">Simulated vCPUs</span>
                             <span className="text-cyan-500 dark:text-cyan-400">{resources.cpuCores} Cores</span>
                         </div>
-                        <input 
-                            type="range" min="1" max="16" step="1" value={resources.cpuCores}
-                            onChange={(e) => setResources(p => ({...p, cpuCores: parseInt(e.target.value)}))}
-                            className="w-full h-1 bg-slate-300 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-500"
-                        />
+                        <input type="range" min="1" max="16" step="1" value={resources.cpuCores} onChange={(e) => setResources(p => ({...p, cpuCores: parseInt(e.target.value)}))} className="w-full h-1 bg-slate-300 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-500" />
                     </div>
                     <div>
                         <div className="flex justify-between text-xs mb-1">
                             <span className="text-slate-500 dark:text-slate-400">Memory Allocation</span>
                             <span className="text-blue-500 dark:text-blue-400">{resources.ramGB} GB</span>
                         </div>
-                        <input 
-                            type="range" min="4" max="64" step="4" value={resources.ramGB}
-                            onChange={(e) => setResources(p => ({...p, ramGB: parseInt(e.target.value)}))}
-                            className="w-full h-1 bg-slate-300 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
-                        />
+                        <input type="range" min="4" max="64" step="4" value={resources.ramGB} onChange={(e) => setResources(p => ({...p, ramGB: parseInt(e.target.value)}))} className="w-full h-1 bg-slate-300 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500" />
                     </div>
                  </div>
 
-                 {/* Threshold Config */}
                  <div className="flex-1 space-y-4 overflow-y-auto pr-2 scrollbar-hide">
                     <div>
                        <div className="flex justify-between text-xs mb-1">
                           <span className="text-slate-500 dark:text-slate-400">Alert CPU %</span>
                           <span className="text-orange-500 dark:text-orange-400">{thresholds.cpu}%</span>
                        </div>
-                       <input 
-                         type="range" min="50" max="95" value={thresholds.cpu}
-                         onChange={(e) => setThresholds(p => ({...p, cpu: parseInt(e.target.value)}))}
-                         className="w-full h-1 bg-slate-300 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
-                       />
+                       <input type="range" min="50" max="95" value={thresholds.cpu} onChange={(e) => setThresholds(p => ({...p, cpu: parseInt(e.target.value)}))} className="w-full h-1 bg-slate-300 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-orange-500" />
                     </div>
                     <div>
                        <div className="flex justify-between text-xs mb-1">
                           <span className="text-slate-500 dark:text-slate-400">Latency Max</span>
                           <span className="text-purple-500 dark:text-purple-400">{thresholds.latency}ms</span>
                        </div>
-                       <input 
-                         type="range" min="50" max="500" value={thresholds.latency}
-                         onChange={(e) => setThresholds(p => ({...p, latency: parseInt(e.target.value)}))}
-                         className="w-full h-1 bg-slate-300 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
-                       />
+                       <input type="range" min="50" max="500" value={thresholds.latency} onChange={(e) => setThresholds(p => ({...p, latency: parseInt(e.target.value)}))} className="w-full h-1 bg-slate-300 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500" />
                     </div>
                  </div>
 
-                 {/* System Log */}
                  <div className="flex-1 border-l border-slate-200 dark:border-slate-700/50 pl-4 flex flex-col min-w-[150px]">
                     <span className="text-xs text-slate-500 font-bold uppercase mb-2">System Log</span>
                     <div className="flex-1 overflow-y-auto space-y-2 pr-1 scrollbar-hide text-[10px] font-mono">
@@ -342,7 +302,6 @@ export const StageMonitor: React.FC<Props> = ({ config, generatedCode, onBack })
         </div>
 
         <div className="lg:col-span-7 h-full flex flex-col gap-6 min-h-0">
-           
            <div className="glass-panel p-5 rounded-xl h-1/3 flex flex-col min-h-0">
              <div className="flex items-center justify-between mb-2">
                 <h3 className="text-slate-900 dark:text-white font-bold text-sm flex items-center">
@@ -361,10 +320,7 @@ export const StageMonitor: React.FC<Props> = ({ config, generatedCode, onBack })
                    </defs>
                    <XAxis dataKey="time" hide />
                    <YAxis stroke="#94a3b8" fontSize={10} width={30} tickLine={false} axisLine={false} />
-                   <Tooltip 
-                     contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', border: '1px solid #1e293b', borderRadius: '8px', color: '#fff' }}
-                     itemStyle={{ color: '#22d3ee' }}
-                   />
+                   <Tooltip contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', border: '1px solid #1e293b', borderRadius: '8px', color: '#fff' }} itemStyle={{ color: '#22d3ee' }} />
                    <Area type="monotone" dataKey="requests" stroke="#06b6d4" strokeWidth={2} fillOpacity={1} fill="url(#colorReq)" animationDuration={500} />
                  </AreaChart>
                </ResponsiveContainer>
@@ -385,23 +341,17 @@ export const StageMonitor: React.FC<Props> = ({ config, generatedCode, onBack })
              
              <div className="flex-1 relative group rounded-xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900/50">
                 <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center z-20 pointer-events-none">
-                   <button 
-                      onClick={() => setIsFullScreen(true)}
-                      className="pointer-events-auto transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 bg-white text-slate-900 px-8 py-4 rounded-full font-bold flex items-center shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:scale-105 hover:bg-slate-50"
-                   >
+                   <button onClick={() => setIsFullScreen(true)} className="pointer-events-auto transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 bg-white text-slate-900 px-8 py-4 rounded-full font-bold flex items-center shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:scale-105 hover:bg-slate-50">
                       <ExternalLink className="mr-2" size={20} /> Open App Website
                    </button>
                 </div>
-
                 <GeneratedWebsitePreview config={safeConfig} generatedCode={generatedCode} />
-                
                 <div className="absolute bottom-6 right-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-lg text-xs text-slate-500 dark:text-slate-400 shadow-lg z-10 group-hover:opacity-0 transition-opacity pointer-events-none">
                   <span className="text-emerald-500 dark:text-emerald-400">●</span> Hover to Interact
                 </div>
              </div>
            </div>
         </div>
-
       </div>
       
       <div className="text-center pt-4 border-t border-slate-200 dark:border-slate-800/50 mt-4">

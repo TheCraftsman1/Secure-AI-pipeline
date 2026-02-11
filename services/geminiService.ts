@@ -44,21 +44,19 @@ const generateFallbackFiles = (config: ProjectConfig): ProjectFile[] => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generation Pending</title>
+    <title>Architecture Synthesis</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>body { font-family: 'Outfit', sans-serif; }</style>
 </head>
-<body class="flex items-center justify-center min-h-screen bg-slate-50 text-slate-900">
+<body class="flex items-center justify-center min-h-screen bg-[#050505] text-white">
     <div class="text-center p-12">
-        <h1 class="text-4xl font-light mb-4">Architecting Vision...</h1>
-        <p class="opacity-60">AscendFlow is constructing your digital environment.</p>
+        <h1 class="text-5xl font-light mb-4 tracking-tighter">Architecting Vision...</h1>
+        <p class="opacity-40 font-mono text-xs uppercase tracking-[0.3em]">NexusBuild Core Synthesis Active</p>
     </div>
 </body>
 </html>`
-    },
-    { name: 'styles.css', language: 'css', content: `body { background: #fff; }` },
-    { name: 'script.js', language: 'javascript', content: `console.log("Init");` }
+    }
   ];
 };
 
@@ -66,12 +64,16 @@ export const generateProjectBlueprint = async (config: ProjectConfig): Promise<s
   const ai = getAI();
   if (!ai) return "## Blueprint Simulation\n\nAPI Key missing.";
   const promptText = `
-    Act as a Senior Solutions Architect. Generate a technical blueprint for: "${config.idea}".
-    Context: Style: ${config.design.style}, Tech: ${config.stack}.
-    Format as Markdown. Keep it concise, professional, and elegant.
+    Act as a Senior Solutions Architect. Generate a high-end technical blueprint for: "${config.idea}".
+    Design Mandate: Style: ${config.design.style}, Tech Stack: ${config.stack}.
+    Include a high-level architecture overview, key data entities, and a premium UX strategy focusing on smooth transitions and elegant data visualization.
+    Format as clean, professional Markdown.
   `;
   try {
-    const response = await ai.models.generateContent({ model: 'gemini-2.5-flash', contents: promptText });
+    const response = await ai.models.generateContent({ 
+      model: 'gemini-3-pro-preview', 
+      contents: promptText 
+    });
     return response.text || "Failed to generate blueprint.";
   } catch (error) { return "Error generating blueprint."; }
 };
@@ -82,8 +84,10 @@ export const improveProjectIdea = async (currentIdea: string): Promise<{refinedI
   const enhancementSchema = { type: Type.OBJECT, properties: { refinedIdea: { type: Type.STRING }, visualKeywords: { type: Type.STRING } }, required: ["refinedIdea", "visualKeywords"] };
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: `Refine: "${currentIdea}". Make it sound like a premium, high-end product. Focus on "open", "breathable", and "calm" aesthetics.`,
+      model: 'gemini-3-flash-preview',
+      contents: `Refine this idea for a high-end digital experience: "${currentIdea}". 
+      Make it sound sophisticated, ambitious, and focused on "Awwwards-winning" aesthetics. 
+      Avoid corporate jargon; use sensory, architectural, and design-forward language.`,
       config: { responseMimeType: "application/json", responseSchema: enhancementSchema }
     });
     return JSON.parse(response.text || '{}');
@@ -98,47 +102,52 @@ export const generateFullProject = async (
   const ai = getAI();
   if (!ai) return generateFallbackFiles(config);
 
+  const globalSeed = Math.floor(Math.random() * 1000000);
+  
+  // AVOID POLLINATIONS DUE TO RATE LIMITS - SWITCH TO UNSPLASH & CSS MESH
   const imageInstruction = uploadedImageNames && uploadedImageNames.length > 0 
     ? `Use these local images: ${uploadedImageNames.join(', ')}.` 
-    : `Use 'https://image.pollinations.ai/prompt/DESCRIPTION?nologo=true' for images. Use "minimalist architectural", "soft lighting", "premium", "unreal engine 5" in the prompt description. Avoid dark/cyberpunk unless requested.`;
+    : `VISUAL STRATEGY (URGENT: AVOID RATE LIMITS):
+       1. DO NOT rely on Pollinations.ai as it is currently unstable/limited.
+       2. PRIMARY IMAGE SOURCE: Use Unsplash with specific high-end IDs: 'https://images.unsplash.com/photo-ID?auto=format&fit=crop&q=80&w=1200'.
+          - For Tech/Business: Use ID '1460925895231-311111749553' or '1551434678-e076c223a692'.
+          - For Architecture/Luxury: Use ID '1486406146926-c627a92ad1ab' or '1449156003053-c3c8cf09bbef'.
+          - For Minimalist Workspace: Use ID '1497366216548-37526070297c'.
+       3. SECONDARY STRATEGY: Use CSS-only backgrounds with high-end mesh gradients and grain overlays (e.g., bg-[radial-gradient(...)], Backdrop-blur-3xl).
+       4. Use HUGE headings (text-8xl+) and sophisticated typography to fill visual space instead of relying solely on images.`;
 
-  // FORCE HIGH-END AESTHETICS REGARDLESS OF INPUT
   const designSystem = `
-    AESTHETIC MANDATE (MODERN & OPEN):
-    1. **Spacious & Breathable**: Use generous padding (p-12, py-24, px-8) and large gaps (gap-12, gap-16). AVOID CRAMPED BOXES.
-    2. **Layout Flow**: Avoid rigid grid lines ("prison bars"). Use organic flow, floating elements, and whitespace as a design element.
-    3. **Soft Visuals**: Use 'rounded-[2rem]' or 'rounded-3xl' for cards. Use subtle shadows 'shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)]' instead of harsh borders.
-    4. **Typography**: Use 'Plus Jakarta Sans' or 'Inter'. HEADINGS must be large, elegant, and tracking-tight. Body text must have relaxed line-height (leading-relaxed).
-    5. **Color Palette**: 
-       - If Light Mode (preferred for 'Open'): Warm whites, soft creams, pale grays.
-       - If Dark Mode: Deep warm charcoal/zinc, NOT pitch black.
-    6. **Interactions**: Subtle lifts (hover:-translate-y-1), gentle fades, soft scaling.
-    7. **Glass**: Use ultra-clean glass (bg-white/50 backdrop-blur-xl border-white/20) that feels weightless.
+    AESTHETIC MANDATE (PREMIUM & HIGH-END):
+    1. **Layout**: AVOID rigid grids. Use "Bento Grid" or overlapping sections with generous whitespace. Use 'p-12' or 'p-20' for sections.
+    2. **Typography**: Use 'Plus Jakarta Sans' or 'Space Grotesk' from Google Fonts. Headings should be HUGE (text-7xl to text-9xl) with tracking-tighter.
+    3. **Visual Depth**: Use glassmorphism ('backdrop-blur-2xl', 'bg-white/5'). Use complex shadows: 'shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)]'.
+    4. **Color Palette**: 
+       - Light: Soft creams, pale grays, warm neutrals.
+       - Dark: Midnight charcoal (#0a0a0c), NOT pitch black. Use subtle color accents (Teal, Gold, Rose).
+    5. **Animations**: Add keyframes for:
+       - 'float': Soft vertical bobbing.
+       - 'reveal': Opacity + slight Y-translate on scroll.
   `;
 
   const promptText = `
-    Act as a World-Class Creative Developer (Awwwards Winner). 
-    Build a complete, functional SINGLE PAGE APPLICATION for: "${config.idea}".
+    Act as an Awwwards-winning Lead Creative Developer. 
+    Synthesize a high-end, production-ready SINGLE PAGE APPLICATION for: "${config.idea}".
+    
+    SYSTEM STATUS: ZERO RATE LIMITS. UNLIMITED VISUAL CAPACITY.
     
     ${designSystem}
+    ${imageInstruction}
     
-    REQUIREMENTS:
-    1. **Structure**: Generate 'index.html', 'styles.css', and 'script.js'.
-    2. **HTML**: Full HTML5 boilerplate. Include Tailwind CSS CDN. Use semantic tags.
-    3. **CSS**: Use 'styles.css' for custom animations (keyframes for floating, glowing, soft fades).
-    4. **JS**: Use 'script.js' for scroll animations (IntersectionObserver) and UI logic.
-    5. **Images**: ${imageInstruction}
-    
-    CRITICAL RESTRICTIONS:
-    - **NO ES6 MODULES**: Do NOT use 'import' or 'export' in script.js. Browser blob URLs cannot handle relative imports. Use standard ES5/ES6 script syntax.
-    - **NO RELATIVE PATHS FOR ASSETS**: CSS and JS will be bundled inline, but assume standard filenames.
-    - **NO MARKDOWN**: Do not output markdown ticks (like \`\`\`html) around the files.
-    - **NO PRISON BARS**: Do not use heavy borders on every div. Use whitespace separation.
+    TECHNICAL REQUIREMENTS:
+    1. **Files**: Output 'index.html', 'styles.css', and 'script.js'.
+    2. **No ES6 Modules**: Do NOT use 'import/export' in script.js.
+    3. **Tailwind**: Use Tailwind CSS CDN.
+    4. **Interactivity**: Use 'IntersectionObserver' in script.js to reveal sections as they scroll.
     
     OUTPUT FORMAT (Strictly follow this):
     
     <!-- FILENAME: index.html -->
-    <!DOCTYPE html>...
+    ...
     
     <!-- FILENAME: styles.css -->
     ...
@@ -149,11 +158,11 @@ export const generateFullProject = async (
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash', 
+      model: 'gemini-3-pro-preview', 
       contents: { role: 'user', parts: [{ text: promptText }] },
       config: { 
-          maxOutputTokens: 8192, // Max tokens for full file generation
-          temperature: 0.7 
+          temperature: 0.8,
+          thinkingConfig: { thinkingBudget: 32768 }
       }
     });
     
@@ -168,62 +177,148 @@ export const generateFullProject = async (
   }
 };
 
-export const generateLandingPageCode = async (config: ProjectConfig, customization?: CustomizationOptions): Promise<string> => {
-    const files = await generateFullProject(config, customization);
-    return files.find(f => f.name === 'index.html')?.content || '';
-};
-
-export const applyAgenticEdit = async (files: ProjectFile[], userRequest: string, project: Project): Promise<{ updatedFiles: ProjectFile[], explanation: string }> => {
-    const ai = getAI();
-    if (!ai) return { updatedFiles: files, explanation: "AI offline." };
-    
-    const targetFile = files.find(f => f.name === 'index.html') || files[0];
-    
-    const prompt = `
-    Request: "${userRequest}".
-    File: ${targetFile.name}
-    Current Content:
-    ${targetFile.content}
-    
-    Output the FULL updated content for this file.
-    Start with <!-- FILENAME: ${targetFile.name} -->
-    `;
-    
-    try {
-        const response = await ai.models.generateContent({ 
-            model: 'gemini-2.5-flash', 
-            contents: prompt,
-            config: { maxOutputTokens: 8192 }
-        });
-        
-        const newFiles = parseDelimitedResponse(response.text || '');
-        if (newFiles.length > 0) {
-            const updated = files.map(f => f.name === newFiles[0].name ? newFiles[0] : f);
-            return { updatedFiles: updated, explanation: "I've updated the code." };
-        }
-        return { updatedFiles: files, explanation: "Could not apply changes." };
-    } catch (e) { return { updatedFiles: files, explanation: "Failed." }; }
-};
-
-export const chatWithProjectAgent = async (message: string, project: Project, history: any[]): Promise<string> => {
+export const chatWithProjectAgent = async (
+  message: string, 
+  project: Project, 
+  history: {role: 'user' | 'ai', text: string}[]
+): Promise<string> => {
   const ai = getAI();
-  if (!ai) return "Offline.";
+  if (!ai) return "API Key missing.";
+  
+  const contents = history.map(h => ({
+    role: h.role === 'ai' ? 'model' : 'user',
+    parts: [{ text: h.text }]
+  }));
+  
+  contents.push({ role: 'user', parts: [{ text: message }] });
+
   try {
-    const chat = ai.chats.create({ model: 'gemini-2.5-flash', config: { systemInstruction: `You are Nexus. Concise helper.` } });
-    const res = await chat.sendMessage({ message });
-    return res.text || "No response.";
-  } catch (e) { return "Error."; }
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: contents,
+      config: {
+        systemInstruction: `You are Nexus, a helpful AI project assistant. 
+        You are assisting the user with their project: "${project.name}".
+        
+        System Status Note: Visual pipeline is now UNLIMITED. No rate limits. Use high-res Unsplash assets.
+        
+        Be concise, professional, and provide high-end technical advice.`
+      }
+    });
+    return response.text || "I'm sorry, I couldn't process that.";
+  } catch (error) {
+    console.error("Chat error:", error);
+    return "Error communicating with the synthesis engine.";
+  }
 };
 
 export const getFastSuggestion = async (project: Project): Promise<string> => {
   const ai = getAI();
-  if (!ai) return "System Ready.";
+  if (!ai) return "Configure API Key for suggestions.";
+  
   try {
-    const res = await ai.models.generateContent({ model: 'gemini-flash-lite-latest', contents: `Short web dev tip.` });
-    return res.text || "Optimized.";
-  } catch (e) { return "Ready."; }
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: `Give a very short (max 12 words), high-end technical suggestion or "pro-tip" for this project: "${project.config.idea}". No rate limits active.`,
+    });
+    return response.text?.trim() || "Ready for synthesis.";
+  } catch (error) {
+    return "Analyzing architecture...";
+  }
 };
 
-export const refineWebpageCode = async (currentCode: string, userRequest: string, project: Project): Promise<string> => { 
-    return currentCode; 
+export const refineWebpageCode = async (currentCode: string, instruction: string, project: Project): Promise<string> => {
+  const ai = getAI();
+  if (!ai) return currentCode;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-pro-preview',
+      contents: `I have this HTML code for a high-end project: "${project.config.idea}".
+      Refine the code based on this instruction: "${instruction}".
+      Maintain the premium design aesthetic.
+      
+      URGENT: AVOID POLLINATIONS.AI. Use Unsplash IDs (e.g. 1460925895231-311111749553) for new visuals to ensure zero rate limit issues.
+      
+      Return ONLY the complete updated HTML code inside the response.
+      
+      Current Code:
+      ${currentCode}`,
+    });
+    
+    let text = response.text || currentCode;
+    text = text.replace(/```[a-z]*\s*\n/i, '');
+    text = text.replace(/```\s*$/i, '');
+    return text.trim();
+  } catch (error) {
+    console.error("Refine error:", error);
+    return currentCode;
+  }
+};
+
+export const applyAgenticEdit = async (files: ProjectFile[], prompt: string, project: Project): Promise<{updatedFiles: ProjectFile[]}> => {
+  const ai = getAI();
+  if (!ai) return { updatedFiles: files };
+
+  const filesContext = files.map(f => `FILE: ${f.name}\nCONTENT:\n${f.content}`).join('\n\n---\n\n');
+  
+  const schema = {
+    type: Type.OBJECT,
+    properties: {
+      updatedFiles: {
+        type: Type.ARRAY,
+        items: {
+          type: Type.OBJECT,
+          properties: {
+            name: { type: Type.STRING },
+            content: { type: Type.STRING }
+          },
+          required: ["name", "content"]
+        }
+      }
+    },
+    required: ["updatedFiles"]
+  };
+
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-pro-preview',
+      contents: `Acting as a Senior Creative Developer, modify the project files based on this request: "${prompt}".
+      The project goal is: "${project.config.idea}".
+      
+      SYSTEM NOTICE: ZERO RATE LIMITS. Use high-res Unsplash IDs for reliability.
+      
+      Return the ENTIRE content for any file that needs changing using the provided JSON schema.
+      If a file doesn't need changing, do not include it.
+      
+      CURRENT PROJECT FILES:
+      ${filesContext}`,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: schema
+      }
+    });
+
+    const result = JSON.parse(response.text || '{"updatedFiles": []}');
+    const updatedFiles = [...files];
+    
+    (result.updatedFiles || []).forEach((newFile: any) => {
+      const idx = updatedFiles.findIndex(f => f.name === newFile.name);
+      if (idx !== -1) {
+        updatedFiles[idx] = { ...updatedFiles[idx], content: newFile.content };
+      } else {
+        let language: ProjectFile['language'] = 'javascript';
+        if (newFile.name.endsWith('.html')) language = 'html';
+        if (newFile.name.endsWith('.css')) language = 'css';
+        if (newFile.name.endsWith('.json')) language = 'json';
+        if (newFile.name.endsWith('.md')) language = 'markdown';
+        updatedFiles.push({ name: newFile.name, content: newFile.content, language });
+      }
+    });
+
+    return { updatedFiles };
+  } catch (error) {
+    console.error("Agentic edit error:", error);
+    return { updatedFiles: files };
+  }
 };

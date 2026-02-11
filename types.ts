@@ -37,7 +37,7 @@ export interface ProjectConfig {
   database: Database;
   features: ProjectFeatures;
   design: ProjectDesign;
-  visualIdentity?: string; // Kept for AI suggestions
+  visualIdentity?: string;
   referenceImages?: string[];
 }
 
@@ -68,13 +68,12 @@ export type PipelineStage =
   | 'deploy' 
   | 'monitor';
 
-// New Types for Admin/Chat
 export interface ChatMessage {
   id: string;
   role: 'user' | 'ai';
   text: string;
   timestamp: number;
-  isCodeUpdate?: boolean; // If true, this message contains a code update
+  isCodeUpdate?: boolean;
 }
 
 export interface ProjectFile {
@@ -90,9 +89,10 @@ export interface Project {
   lastModified?: number;
   status: 'building' | 'live' | 'archived';
   config: ProjectConfig;
-  generatedCode?: string; // Legacy single-file support
-  files?: ProjectFile[]; // New multi-file support
+  generatedCode?: string;
+  files?: ProjectFile[];
   currentStage: number;
   blueprint?: string;
   chatHistory?: ChatMessage[];
+  isTurbo?: boolean; // New flag for fast-track demos
 }

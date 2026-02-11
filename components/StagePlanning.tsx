@@ -90,28 +90,41 @@ export const StagePlanning: React.FC<Props> = ({ onComplete }) => {
   };
 
   const applyTemplate = (type: 'saas' | 'portfolio' | 'ecommerce') => {
+      // Immediate submission for templates to skip the "Architecting..." delay
+      setIsGenerating(true);
+      let config: ProjectConfig = {
+          idea: "",
+          stack: TechStack.ReactNode,
+          database: Database.Postgres,
+          features: { auth: true, payments: true, search: true, admin: true, notifications: true, analytics: true },
+          design: { style: 'Luxury', theme: 'Midnight', primaryColor: 'amber' },
+          referenceImages: []
+      };
+      
+      let mockBlueprint = "";
+
       if (type === 'saas') {
-          setIdea("A B2B SaaS platform for project management with kanban boards, team collaboration features, and subscription billing.");
-          setStack(TechStack.NextGo);
-          setDesignStyle('Corporate');
-          setColorTheme('Light');
-          setPrimaryColor('blue');
-          setFeatures({ auth: true, payments: true, search: true, admin: true, notifications: true, analytics: true });
+          config.idea = "A B2B SaaS platform for project management with kanban boards, team collaboration features, and subscription billing.";
+          config.stack = TechStack.NextGo;
+          config.design = { style: 'Corporate', theme: 'Light', primaryColor: 'blue' };
+          mockBlueprint = "## Enterprise SaaS Architecture\n\n- **Core**: Microservices (Go) + Next.js Frontend\n- **Auth**: RBAC / SSO Integration\n- **Data**: Distributed Postgres Shards";
       } else if (type === 'portfolio') {
-          setIdea("A minimalist portfolio website for a senior product designer featuring a case study gallery, about me section, and contact form.");
-          setStack(TechStack.ReactNode);
-          setDesignStyle('Minimal');
-          setColorTheme('Light');
-          setPrimaryColor('indigo');
-          setFeatures({ auth: false, payments: false, search: false, admin: true, notifications: false, analytics: true });
+          config.idea = "A minimalist portfolio website for a senior product designer featuring a case study gallery, about me section, and contact form.";
+          config.stack = TechStack.ReactNode;
+          config.design = { style: 'Minimal', theme: 'Light', primaryColor: 'indigo' };
+          config.features = { auth: false, payments: false, search: false, admin: true, notifications: false, analytics: true };
+          mockBlueprint = "## Design Portfolio System\n\n- **Static Generation**: High-performance static assets\n- **CMS**: Headless integration\n- **Asset Delivery**: Global CDN Optimization";
       } else if (type === 'ecommerce') {
-          setIdea("A high-end luxury e-commerce boutique selling rare wines and spirits with a timeline history, sommelier notes, and exclusive membership access.");
-          setStack(TechStack.ReactNode);
-          setDesignStyle('Luxury');
-          setColorTheme('Midnight');
-          setPrimaryColor('amber');
-          setFeatures({ auth: true, payments: true, search: true, admin: true, notifications: true, analytics: true });
+          config.idea = "A high-end luxury e-commerce boutique selling rare wines and spirits with a timeline history, sommelier notes, and exclusive membership access.";
+          config.stack = TechStack.ReactNode;
+          config.design = { style: 'Luxury', theme: 'Midnight', primaryColor: 'amber' };
+          mockBlueprint = "## Luxury Commerce Engine\n\n- **Inventory**: Real-time consistency\n- **Payments**: Stripe Connect Integration\n- **Security**: PCI-DSS Compliant Vault";
       }
+
+      setTimeout(() => {
+          setIsGenerating(false);
+          onComplete(config, mockBlueprint);
+      }, 800); // Small artificial delay for UI feedback
   };
 
   const handleSubmit = async () => {
@@ -129,6 +142,8 @@ export const StagePlanning: React.FC<Props> = ({ onComplete }) => {
         },
         referenceImages: referenceImages || []
     };
+    // If it's a manual entry, we still hit the API for accuracy, 
+    // unless we want to force speed everywhere. Keeping API for manual to ensure quality.
     const blueprint = await generateProjectBlueprint(config);
     setIsGenerating(false);
     onComplete(config, blueprint);
@@ -137,13 +152,13 @@ export const StagePlanning: React.FC<Props> = ({ onComplete }) => {
   return (
     <div className="space-y-8 animate-fade-in pb-12">
       
-      {/* Cinematic AI Hero Section */}
+      {/* Cinematic High-Res Hero Section (Unsplash) */}
       <div className="relative w-full h-72 rounded-[2rem] overflow-hidden group">
-        <div className="absolute inset-0 bg-midnight-900 animate-pulse"></div>
+        <div className="absolute inset-0 bg-midnight-900"></div>
         <img 
-          src="https://image.pollinations.ai/prompt/minimalist%20architectural%20workspace%20bright%20open%20space%20warm%20lighting%20soft%20shadows%20creative%20studio%20atmosphere%20ultra%20realistic%208k%20inviting?width=1200&height=600&nologo=true" 
+          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1200" 
           alt="AI Planning Interface" 
-          className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-1000 ease-in-out"
+          className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-[2000ms]"
         />
         
         {/* Soft Gradient Overlay */}
@@ -176,19 +191,34 @@ export const StagePlanning: React.FC<Props> = ({ onComplete }) => {
                 <Sparkles size={22} className="mr-3 text-accent-teal" /> Core Concept
             </h3>
             
-            {/* Quick Templates */}
+            {/* Quick Templates - NOW INSTANT */}
             <div className="grid grid-cols-3 gap-6 mb-8">
-                <button onClick={() => applyTemplate('saas')} className="p-4 rounded-3xl bg-white/5 hover:bg-white/10 transition-all text-left group border border-white/5 hover:border-white/10 hover:-translate-y-1">
+                <button 
+                    onClick={() => applyTemplate('saas')} 
+                    disabled={isGenerating}
+                    className="p-4 rounded-3xl bg-white/5 hover:bg-white/10 transition-all text-left group border border-white/5 hover:border-white/10 hover:-translate-y-1 disabled:opacity-50"
+                >
                     <Rocket size={24} className="text-accent-teal mb-3 group-hover:scale-110 transition-transform" />
                     <div className="font-medium text-white text-sm">SaaS Platform</div>
+                    <div className="text-[10px] text-slate-500 mt-1 uppercase tracking-wider">Fast Track</div>
                 </button>
-                <button onClick={() => applyTemplate('portfolio')} className="p-4 rounded-3xl bg-white/5 hover:bg-white/10 transition-all text-left group border border-white/5 hover:border-white/10 hover:-translate-y-1">
+                <button 
+                    onClick={() => applyTemplate('portfolio')} 
+                    disabled={isGenerating}
+                    className="p-4 rounded-3xl bg-white/5 hover:bg-white/10 transition-all text-left group border border-white/5 hover:border-white/10 hover:-translate-y-1 disabled:opacity-50"
+                >
                     <Briefcase size={24} className="text-accent-rose mb-3 group-hover:scale-110 transition-transform" />
                     <div className="font-medium text-white text-sm">Portfolio</div>
+                    <div className="text-[10px] text-slate-500 mt-1 uppercase tracking-wider">Fast Track</div>
                 </button>
-                <button onClick={() => applyTemplate('ecommerce')} className="p-4 rounded-3xl bg-white/5 hover:bg-white/10 transition-all text-left group border border-white/5 hover:border-white/10 hover:-translate-y-1">
+                <button 
+                    onClick={() => applyTemplate('ecommerce')} 
+                    disabled={isGenerating}
+                    className="p-4 rounded-3xl bg-white/5 hover:bg-white/10 transition-all text-left group border border-white/5 hover:border-white/10 hover:-translate-y-1 disabled:opacity-50"
+                >
                     <ShoppingBag size={24} className="text-accent-gold mb-3 group-hover:scale-110 transition-transform" />
                     <div className="font-medium text-white text-sm">Luxury Store</div>
+                    <div className="text-[10px] text-slate-500 mt-1 uppercase tracking-wider">Fast Track</div>
                 </button>
             </div>
 
@@ -196,7 +226,7 @@ export const StagePlanning: React.FC<Props> = ({ onComplete }) => {
                 <div className="relative bg-white/5 rounded-3xl border border-white/10 focus-within:bg-white/[0.07] transition-all">
                     <textarea 
                     className="w-full bg-transparent border-none rounded-2xl p-6 text-white placeholder-slate-500 focus:ring-0 outline-none transition-all h-40 resize-none text-lg leading-relaxed font-light"
-                    placeholder="Describe your dream application in detail... What is it? Who is it for? What does it do?"
+                    placeholder="Describe your dream application in detail..."
                     value={idea}
                     onChange={(e) => setIdea(e.target.value)}
                     />
@@ -322,60 +352,17 @@ export const StagePlanning: React.FC<Props> = ({ onComplete }) => {
                         <label className="block text-slate-400 text-xs font-bold uppercase tracking-widest mb-3">Stack</label>
                         <div className="relative">
                             <select 
-                                className="w-full bg-midnight-800 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-accent-teal transition-all text-sm appearance-none cursor-pointer hover:bg-midnight-700"
+                                className="w-full bg-midnight-800 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-accent-teal transition-all text-sm appearance-none cursor-pointer"
                                 value={stack}
                                 onChange={(e) => setStack(e.target.value as TechStack)}
                             >
                                 {Object.values(TechStack).map(v => <option key={v} value={v}>{v}</option>)}
                             </select>
                             <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
+                                <ChevronDown size={14} />
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <label className="block text-slate-400 text-xs font-bold uppercase tracking-widest mb-3">Database</label>
-                        <div className="relative">
-                            <select 
-                                className="w-full bg-midnight-800 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-accent-teal transition-all text-sm appearance-none cursor-pointer hover:bg-midnight-700"
-                                value={database}
-                                onChange={(e) => setDatabase(e.target.value as Database)}
-                            >
-                                {Object.values(Database).map(v => <option key={v} value={v}>{v}</option>)}
-                            </select>
-                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Features */}
-            <div className="glass-panel p-8">
-                <h3 className="text-lg font-display font-medium text-white mb-6 flex items-center">
-                    <Grid size={20} className="mr-3 text-emerald-400" /> Modules
-                </h3>
-                
-                <div className="space-y-3">
-                    {Object.keys(features).map((f) => {
-                        const key = f as keyof ProjectFeatures;
-                        const active = features[key];
-                        return (
-                            <button
-                            key={key}
-                            onClick={() => handleToggle(key)}
-                            className={`w-full flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 hover:scale-[1.02] active:scale-95 ${
-                                active 
-                                ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' 
-                                : 'bg-white/5 border-transparent text-slate-500 hover:bg-white/10 hover:text-slate-300'
-                            }`}
-                            >
-                            <span className="capitalize font-medium text-sm">{f}</span>
-                            <ToggleRight size={20} className={`transition-transform duration-300 ${active ? 'text-emerald-400 scale-110' : 'text-slate-600'}`} />
-                            </button>
-                        )
-                    })}
                 </div>
             </div>
 
@@ -386,7 +373,7 @@ export const StagePlanning: React.FC<Props> = ({ onComplete }) => {
                 className={`w-full py-5 rounded-2xl font-bold text-lg flex items-center justify-center space-x-3 transition-all duration-500 shadow-xl
                 ${!idea || isGenerating 
                     ? 'bg-midnight-800 text-slate-600 cursor-not-allowed border border-white/5' 
-                    : 'bg-white text-midnight-900 hover:scale-[1.02] shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_-10px_rgba(255,255,255,0.5)]'
+                    : 'bg-white text-midnight-900 hover:scale-[1.02] shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]'
                 }`}
             >
                 {isGenerating ? (
@@ -406,3 +393,7 @@ export const StagePlanning: React.FC<Props> = ({ onComplete }) => {
     </div>
   );
 };
+
+const ChevronDown = ({ size }: { size: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+);
